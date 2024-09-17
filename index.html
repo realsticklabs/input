@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Expression Calculator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.3.1/decimal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/9.1.0/bignumber.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,7 +30,7 @@
 <body>
 
 <div class="container">
-    <h1>Math Expression Calculator with Decimal.js</h1>
+    <h1>Math Expression Calculator with BigNumber.js</h1>
     <label for="expression">Enter math expression:</label>
     <input type="text" id="expression" placeholder="E.g. 1.5 + 2.3 * (4 / 2)">
 
@@ -44,11 +44,11 @@
         const expression = document.getElementById('expression').value;
         
         try {
-            // Convert all numbers in the expression to Decimal objects
-            const decimalExpression = expression.replace(/(\d+(\.\d+)?)/g, (match) => `new Decimal(${match})`);
+            // Convert all numbers in the expression to BigNumber objects
+            const bigNumberExpression = expression.replace(/(\d+(\.\d+)?)/g, (match) => `new BigNumber(${match})`);
 
-            // Safely evaluate the expression using Decimal.js
-            const result = eval(decimalExpression);
+            // Safely evaluate the expression using BigNumber.js
+            const result = eval(bigNumberExpression);
             
             document.getElementById('result').innerHTML = `Result: ${result.toString()}`;
         } catch (error) {
