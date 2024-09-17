@@ -23,6 +23,7 @@
         #result {
             margin-top: 20px;
             font-weight: bold;
+            white-space: pre-wrap; /* Ensures new lines are displayed properly */
         }
     </style>
 </head>
@@ -43,13 +44,18 @@
         const expression = document.getElementById('expression').value;
 
         try {
-            // Convert numbers in the expression to BigInt objects
+            // Convert numbers in the expression to BigInt objects by adding `n` after the numbers
             const bigIntExpression = expression.replace(/(\d+)/g, (match) => `${match}n`);
 
-            // Safely evaluate the expression using BigInt
+            // Evaluate the BigInt expression
             const result = eval(bigIntExpression);
             
-            document.getElementById('result').innerHTML = `Result: ${result.toString()}`;
+            // Convert the BigInt result to a string and break it into 15-digit chunks
+            const resultStr = result.toString();
+            const formattedResult = resultStr.replace(/(.{15})/g, '$1\n'); // Insert a new line after every 15 characters
+
+            // Display the result
+            document.getElementById('result').innerHTML = `Result:\n${formattedResult}`;
         } catch (error) {
             document.getElementById('result').innerHTML = `Error: Invalid expression or unsupported operation`;
         }
