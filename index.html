@@ -50,9 +50,9 @@
             // Evaluate the BigInt expression
             const result = eval(bigIntExpression);
             
-            // Convert the BigInt result to a string and break it into 15-digit chunks
+            // Convert the BigInt result to a string and break it into 40-digit chunks
             const resultStr = result.toString();
-            const formattedResult = resultStr.replace(/(.{15})/g, '$1\n'); // Insert a new line after every 15 characters
+            const formattedResult = resultStr.replace(/(.{40})/g, '$1\n'); // Insert a new line after every 15 characters
 
             // Display the result
             document.getElementById('result').innerHTML = `Result:\n${formattedResult}`;
