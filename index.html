@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Expression Calculator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/9.1.0/bignumber.min.js"></script>
+    <title>Math Expression Calculator with BigInt</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,9 +29,9 @@
 <body>
 
 <div class="container">
-    <h1>Math Expression Calculator with BigNumber.js</h1>
+    <h1>Math Expression Calculator with BigInt</h1>
     <label for="expression">Enter math expression:</label>
-    <input type="text" id="expression" placeholder="E.g. 1.5 + 2.3 * (4 / 2)">
+    <input type="text" id="expression" placeholder="E.g. 12345678901234567890 + 98765432109876543210">
 
     <button onclick="calculate()">Calculate</button>
 
@@ -42,17 +41,17 @@
 <script>
     function calculate() {
         const expression = document.getElementById('expression').value;
-        
-        try {
-            // Convert all numbers in the expression to BigNumber objects
-            const bigNumberExpression = expression.replace(/(\d+(\.\d+)?)/g, (match) => `new BigNumber(${match})`);
 
-            // Safely evaluate the expression using BigNumber.js
-            const result = eval(bigNumberExpression);
+        try {
+            // Convert numbers in the expression to BigInt objects
+            const bigIntExpression = expression.replace(/(\d+)/g, (match) => `${match}n`);
+
+            // Safely evaluate the expression using BigInt
+            const result = eval(bigIntExpression);
             
             document.getElementById('result').innerHTML = `Result: ${result.toString()}`;
         } catch (error) {
-            document.getElementById('result').innerHTML = `Error: Invalid expression`;
+            document.getElementById('result').innerHTML = `Error: Invalid expression or unsupported operation`;
         }
     }
 </script>
