@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Precision Math Calculator</title>
+    <title>Math Expression Calculator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.3.1/decimal.min.js"></script>
     <style>
         body {
@@ -15,7 +15,7 @@
             max-width: 400px;
             margin: auto;
         }
-        input, select, button {
+        input, button {
             margin-top: 10px;
             padding: 10px;
             width: 100%;
@@ -30,20 +30,9 @@
 <body>
 
 <div class="container">
-    <h1>Math Calculator with Decimal.js</h1>
-    <label for="number1">Enter first number:</label>
-    <input type="text" id="number1" placeholder="First Number">
-
-    <label for="number2">Enter second number:</label>
-    <input type="text" id="number2" placeholder="Second Number">
-
-    <label for="operation">Select operation:</label>
-    <select id="operation">
-        <option value="add">Addition (+)</option>
-        <option value="subtract">Subtraction (-)</option>
-        <option value="multiply">Multiplication (×)</option>
-        <option value="divide">Division (÷)</option>
-    </select>
+    <h1>Math Expression Calculator with Decimal.js</h1>
+    <label for="expression">Enter math expression:</label>
+    <input type="text" id="expression" placeholder="E.g. 1.5 + 2.3 * (4 / 2)">
 
     <button onclick="calculate()">Calculate</button>
 
@@ -52,29 +41,19 @@
 
 <script>
     function calculate() {
-        const num1 = new Decimal(document.getElementById('number1').value);
-        const num2 = new Decimal(document.getElementById('number2').value);
-        const operation = document.getElementById('operation').value;
-        let result;
+        const expression = document.getElementById('expression').value;
+        
+        try {
+            // Convert all numbers in the expression to Decimal objects
+            const decimalExpression = expression.replace(/(\d+(\.\d+)?)/g, (match) => `new Decimal(${match})`);
 
-        switch (operation) {
-            case 'add':
-                result = num1.plus(num2);
-                break;
-            case 'subtract':
-                result = num1.minus(num2);
-                break;
-            case 'multiply':
-                result = num1.times(num2);
-                break;
-            case 'divide':
-                result = num1.div(num2);
-                break;
-            default:
-                result = 'Invalid operation';
+            // Safely evaluate the expression using Decimal.js
+            const result = eval(decimalExpression);
+            
+            document.getElementById('result').innerHTML = `Result: ${result.toString()}`;
+        } catch (error) {
+            document.getElementById('result').innerHTML = `Error: Invalid expression`;
         }
-
-        document.getElementById('result').innerHTML = `Result: ${result.toString()}`;
     }
 </script>
 
