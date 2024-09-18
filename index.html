@@ -49,13 +49,18 @@
 
             // Evaluate the BigInt expression
             const result = eval(bigIntExpression);
-            
-            // Convert the BigInt result to a string and break it into 15-digit chunks
-            const resultStr = result.toString();
-            const formattedResult = resultStr.replace(/(.{15})/g, '$1\n'); // Insert a new line after every 15 characters
 
-            // Display the result
-            document.getElementById('result').innerHTML = `Result:\n${formattedResult}`;
+            // Convert the BigInt result to a string
+            const resultStr = result.toString();
+
+            // Count the number of digits in the result
+            const digitCount = resultStr.length;
+
+            // Break the result into 15-digit chunks
+            const formattedResult = resultStr.replace(/(.{15})/g, '$1\n'); // Insert a new line every 15 digits
+
+            // Display the result with the number of digits
+            document.getElementById('result').innerHTML = `Result:\n${formattedResult}\nTotal digits: ${digitCount}`;
         } catch (error) {
             document.getElementById('result').innerHTML = `Error: Invalid expression or unsupported operation`;
         }
