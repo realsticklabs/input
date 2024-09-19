@@ -57,7 +57,7 @@
             const digitCount = resultStr.length;
 
             // Break the result into 50-digit chunks
-            const finalResult = resultStr.replace(/(.{50})/g, '$1\n'); // Insert a new line after every 15 digits
+            const finalResult = resultStr.replace(/(.{50})/g, '$1\n'); // Insert a new line after every 50 digits
 
             // Display the result and the total number of digits
             document.getElementById('result').innerHTML = `Result:\n${finalResult}\nTotal digits: ${digitCount}`;
