@@ -23,7 +23,7 @@
         #result {
             margin-top: 20px;
             font-weight: bold;
-            white-space: pre-wrap; /* Ensures new lines are displayed properly */
+            white-space: pre-wrap; /* Ensures new lines and spaces are displayed properly */
         }
     </style>
 </head>
@@ -44,7 +44,7 @@
         const expression = document.getElementById('expression').value;
 
         try {
-            // Convert numbers in the expression to BigInt objects by adding `n` after the numbers
+            // Convert numbers in the expression to BigInt by appending 'n' after numbers
             const bigIntExpression = expression.replace(/(\d+)/g, (match) => `${match}n`);
 
             // Evaluate the BigInt expression
@@ -56,11 +56,14 @@
             // Count the number of digits in the result
             const digitCount = resultStr.length;
 
-            // Break the result into 15-digit chunks
-            const formattedResult = resultStr.replace(/(.{15})/g, '$1\n'); // Insert a new line every 15 digits
+            // Format the result with commas every 3 digits
+            const formattedResult = resultStr.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            // Break the formatted result into 15-digit chunks with new lines
+            const finalResult = formattedResult.replace(/(.{15})/g, '$1\n');
 
             // Display the result with the number of digits
-            document.getElementById('result').innerHTML = `Result:\n${formattedResult}\nTotal digits: ${digitCount}`;
+            document.getElementById('result').innerHTML = `Result:\n${finalResult}\n\nTotal digits: ${digitCount}`;
         } catch (error) {
             document.getElementById('result').innerHTML = `Error: Invalid expression or unsupported operation`;
         }
