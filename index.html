@@ -59,8 +59,8 @@
             // Format the result with commas every 3 digits
             const formattedResult = resultStr.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-            // Break the formatted result into 15-digit chunks with new lines
-            const finalResult = formattedResult.replace(/(.{15})/g, '$1\n');
+            // Break the formatted result into 50-digit chunks with new lines
+            const finalResult = formattedResult.replace(/(.{50})/g, '$1\n');
 
             // Display the result with the number of digits
             document.getElementById('result').innerHTML = `Result:\n${finalResult}\n\nTotal digits: ${digitCount}`;
