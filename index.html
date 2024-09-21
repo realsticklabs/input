@@ -25,10 +25,6 @@
             font-weight: bold;
             white-space: pre-wrap; /* Ensures new lines are displayed properly */
         }
-        img {
-            margin-top: 20px;
-            max-width: 100%;
-        }
     </style>
 </head>
 <body>
@@ -49,11 +45,20 @@
         const query = document.getElementById('query').value;
         const encodedQuery = encodeURIComponent(query);
 
+        // Correct API endpoint with JSON format
         const url = `https://api.wolframalpha.com/v2/query?input=${encodedQuery}&format=plaintext,image&output=JSON&appid=${appId}`;
 
         try {
             const response = await fetch(url);
+
+            // Check for non-200 HTTP responses
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const data = await response.json();
+
+            console.log("API Response: ", data); // Debugging the API response
 
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = '';
@@ -79,6 +84,7 @@
                 resultDiv.innerHTML = 'No result found or an error occurred.';
             }
         } catch (error) {
+            console.error("Error fetching data: ", error);
             document.getElementById('result').innerHTML = `Error: ${error.message}`;
         }
     }
