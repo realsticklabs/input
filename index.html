@@ -36,7 +36,7 @@
 <div class="container">
     <h1>Ask Wolfram Alpha</h1>
     <label for="query">Enter your query:</label>
-    <input type="text" id="query" placeholder="E.g. What is the speed of light?">
+    <input type="text" id="query" placeholder="E.g. 2^4 or speed of light">
 
     <button onclick="fetchWolframAlpha()">Get Answer</button>
 
@@ -59,11 +59,12 @@
             resultDiv.innerHTML = '';
 
             if (data.queryresult.success) {
+                // Loop through the pods to display the plaintext and image results
                 data.queryresult.pods.forEach(pod => {
                     const title = pod.title;
                     const plaintext = pod.subpods[0].plaintext;
 
-                    // Display plain text results
+                    // Display plain text results (e.g., "16" for 2^4)
                     if (plaintext) {
                         resultDiv.innerHTML += `<h3>${title}</h3><p>${plaintext}</p>`;
                     }
