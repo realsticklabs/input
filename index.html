@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Expression Calculator with BigInt</title>
+    <title>Wolfram Alpha Query</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +11,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 400px;
+            max-width: 500px;
             margin: auto;
         }
         input, button {
@@ -25,44 +25,60 @@
             font-weight: bold;
             white-space: pre-wrap; /* Ensures new lines are displayed properly */
         }
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Math Expression Calculator with BigInt</h1>
-    <label for="expression">Enter math expression:</label>
-    <input type="text" id="expression" placeholder="E.g. 12345678901234567890 + 98765432109876543210">
+    <h1>Ask Wolfram Alpha</h1>
+    <label for="query">Enter your query:</label>
+    <input type="text" id="query" placeholder="E.g. What is the speed of light?">
 
-    <button onclick="calculate()">Calculate</button>
+    <button onclick="fetchWolframAlpha()">Get Answer</button>
 
     <div id="result"></div>
 </div>
 
 <script>
-    function calculate() {
-        const expression = document.getElementById('expression').value;
+    async function fetchWolframAlpha() {
+        const appId = 'DEMO'; // Replace with your actual AppID
+        const query = document.getElementById('query').value;
+        const encodedQuery = encodeURIComponent(query);
+
+        const url = `https://api.wolframalpha.com/v2/query?input=${encodedQuery}&format=plaintext,image&output=JSON&appid=${appId}`;
 
         try {
-            // Convert numbers in the expression to BigInt objects by adding 'n' after the numbers
-            const bigIntExpression = expression.replace(/(\d+)/g, (match) => `${match}n`);
+            const response = await fetch(url);
+            const data = await response.json();
 
-            // Evaluate the BigInt expression
-            const result = eval(bigIntExpression);
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
 
-            // Convert the BigInt result to a string
-            const resultStr = result.toString();
+            if (data.queryresult.success) {
+                data.queryresult.pods.forEach(pod => {
+                    const title = pod.title;
+                    const plaintext = pod.subpods[0].plaintext;
 
-            // Count the number of digits in the result
-            const digitCount = resultStr.length;
+                    // Display plain text results
+                    if (plaintext) {
+                        resultDiv.innerHTML += `<h3>${title}</h3><p>${plaintext}</p>`;
+                    }
 
-            // Break the result into 50-digit chunks
-            const finalResult = resultStr.replace(/(.{50})/g, '$1\n'); // Insert a new line after every 50 digits
-
-            // Display the result and the total number of digits
-            document.getElementById('result').innerHTML = `Result:\n${finalResult}\nTotal digits: ${digitCount}`;
+                    // Display images, if available
+                    if (pod.subpods[0].img) {
+                        const imgSrc = pod.subpods[0].img.src;
+                        resultDiv.innerHTML += `<img src="${imgSrc}" alt="${title}">`;
+                    }
+                });
+            } else {
+                resultDiv.innerHTML = 'No result found or an error occurred.';
+            }
         } catch (error) {
-            document.getElementById('result').innerHTML = `Error: Invalid expression or unsupported operation`;
+            document.getElementById('result').innerHTML = `Error: ${error.message}`;
         }
     }
 </script>
